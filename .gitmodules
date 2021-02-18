@@ -1,3 +1,6 @@
 [submodule "sqlite"]
 	path = sqlite
 	url = https://github.com/sqlite/sqlite.git
+[submodule "simplex-toolkit"]
+	path = simplex-toolkit
+	url = https://github.com/SudoCpp/simplex-toolkit.git
