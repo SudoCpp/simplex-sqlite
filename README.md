@@ -5,7 +5,7 @@
 To build you will need a few things on your system. (This is for debian based)
 
 ```
-sudo apt install build-essential gcc g++ gdb cmake ninja-build tck-dev tk-dev tcl
+sudo apt install build-essential gcc g++ gdb cmake ninja-build tcl-dev tk-dev tcl
 ```
 
 First update all the sqlite files
