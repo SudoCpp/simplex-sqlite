@@ -1,6 +1,7 @@
 #include <string.hpp>
-#include <../build/sqlite3.h>
+#include <Dictionary.hpp>
 
+struct sqlite3;
 namespace simplex
 {
     class sqlite
@@ -11,5 +12,7 @@ namespace simplex
         ~sqlite();
 
         void query(string sqlQuery);
+        //Dictionary where keys are column names and value is value. Remember to enter strings wrapped in ''
+        void insert(string tableName, const Dictionary<string, string>& values);
     };
 }

@@ -1,5 +1,6 @@
 #include "sqlite3.hpp"
 #include <Exception.hpp>
+#include <../build/sqlite3.h>
 
 #define __class__ "simplex::sqlite"
 
@@ -28,6 +29,28 @@ namespace simplex
             sqlite3_free(errorMessage);
             throw Exception("Sqlite query failed: '" + errMsg + "'.", __ExceptionParams__);
         }
+    }
+
+    void sqlite::insert(string tableName, const Dictionary<string, string>& values)
+    {
+        string query = "INSERT INTO "+tableName+" (";
+        Array<string> keys = values.keys();
+        size_t numValues = keys.size();
+        for(int loop = 0; loop < numValues; loop++)
+        {
+            if(loop != 0)
+                query += " ,";
+            query += keys[loop];
+        }
+        query += ") VALUES (";
+        for(int loop = 0; loop < numValues; loop++)
+        {
+            if(loop != 0)
+                query += " ,";
+            query += values[keys[loop]];
+        }
+        query += ");";
+        this->query(query);
     }
 }
 
