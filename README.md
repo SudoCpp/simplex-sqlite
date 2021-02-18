@@ -11,7 +11,7 @@ sudo apt install build-essential gcc g++ gdb cmake ninja-build tcl-dev tk-dev tc
 First update all the sqlite files
 
 ```
-git submodule update --recursive
+git submodule update --remote --merge
 ```
 
 To build I personally use VSCode with CMake-Tools add-on, however you should be able to accomplish the same thing with command line. Starting in the root folder of this project.
