@@ -20,4 +20,11 @@ To build I personally use VSCode with CMake-Tools add-on, however you should be 
 mkdir build
 cd build
 cmake ..
+ninja
+```
+
+To perform any rebuilds simply run:
+
+```
+ninja
 ```
