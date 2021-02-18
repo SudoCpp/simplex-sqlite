@@ -8,5 +8,8 @@ namespace simplex
         struct sqlite3* database;
         public:
         sqlite(string filePath);
+        ~sqlite();
+
+        void query(string sqlQuery);
     };
 }
