@@ -133,11 +133,21 @@ set(SourceFiles
 find_package(TCL REQUIRED)
 include_directories("${TCL_INCLUDE_PATH}")
 
-execute_process(COMMAND touch ${CMAKE_SOURCE_DIR}/build/parse.c)
-execute_process(COMMAND touch ${CMAKE_SOURCE_DIR}/build/opcodes.c)
+if(${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
+    set(touchcmd "copy NUL")
+    set(catcmd "type")
+    set(tclcmd "tclsh.exe")
+else()
+    set(touchcmd "touch")
+    set(catcmd "cat")
+    set(tclcmd "tclsh")
+endif()
+
+execute_process(COMMAND ${touchcmd} ${CMAKE_SOURCE_DIR}/build/parse.c)
+execute_process(COMMAND ${touchcmd} ${CMAKE_SOURCE_DIR}/build/opcodes.c)
 
 add_executable(mksourceid ../sqlite/tool/mksourceid.c)
-add_custom_target(CreateSqliteH ALL COMMAND tclsh ../sqlite/tool/mksqlite3h.tcl ../sqlite > sqlite3.h)
+add_custom_target(CreateSqliteH ALL COMMAND ${tclcmd} ../sqlite/tool/mksqlite3h.tcl ../sqlite > sqlite3.h)
 add_executable(lemon sqlite/tool/lemon.c)
 add_custom_target(CreateParseH ALL COMMAND 
     cp ../sqlite/tool/lempar.c . 
@@ -145,8 +155,8 @@ add_custom_target(CreateParseH ALL COMMAND
     && mv ../sqlite/src/parse.h . 
     && mv ../sqlite/src/parse.c . 
     && mv ../sqlite/src/parse.out .)
-add_custom_target(CreateOpcodesH ALL COMMAND cat parse.h ../sqlite/src/vdbe.c | tclsh ../sqlite/tool/mkopcodeh.tcl >opcodes.h)
-add_custom_target(CreateOpcodesC ALL COMMAND tclsh ../sqlite/tool/mkopcodec.tcl opcodes.h >opcodes.c)
+add_custom_target(CreateOpcodesH ALL COMMAND ${catcmd} parse.h ../sqlite/src/vdbe.c | ${tclcmd} ../sqlite/tool/mkopcodeh.tcl >opcodes.h)
+add_custom_target(CreateOpcodesC ALL COMMAND ${tclcmd} ../sqlite/tool/mkopcodec.tcl opcodes.h >opcodes.c)
 add_executable(mkkeywordhash ../sqlite/tool/mkkeywordhash.c)
 add_custom_target(CreateKeywordhashH ALL COMMAND ./mkkeywordhash >keywordhash.h)
 add_library(sqlite ${SourceFiles})
