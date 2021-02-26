@@ -38,19 +38,19 @@
 
 namespace simplex
 {
-    Sqlite3::Sqlite3(string filePath) : Database{DatabaseConnection{"","",filePath}}
+    Sqlite3::Sqlite3(string filePath) : Database{DatabaseCredentials{"","","",filePath}}
     {
         openConnection(filePath);
     }
 
-    Sqlite3::Sqlite3() : Database{DatabaseConnection{"","",":memory:"}}
+    Sqlite3::Sqlite3() : Database{DatabaseCredentials{"","","",":memory:"}}
     {
         openConnection(":memory:");
     }
 
-    Sqlite3::Sqlite3(const DatabaseConnection& connectionSettings) : Database{connectionSettings}
+    Sqlite3::Sqlite3(const DatabaseCredentials& credentials) : Database{credentials}
     {
-        openConnection(connectionSettings.DatabaseName);
+        openConnection(credentials.databaseName);
     }
 
     void Sqlite3::openConnection(const string& filePath)
@@ -79,14 +79,9 @@ namespace simplex
         return DataTable{};
     }
 
-    std::shared_ptr<DatabaseStatement> Sqlite3::prepare(const string& sqlQuery)
+    SqliteStatement* Sqlite3::prepare(const string& sqlQuery)
     {
-        return prepareInternal(sqlQuery); //smart pointers don't support covariants
-    }
-
-    std::shared_ptr<SqliteStatement> Sqlite3::prepareInternal(const string& sqlQuery)
-    {
-        return std::make_shared<SqliteStatement>(sqlQuery, database);
+        return new SqliteStatement{sqlQuery, database};
     }
 }
 

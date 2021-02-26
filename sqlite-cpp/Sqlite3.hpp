@@ -60,17 +60,16 @@ namespace simplex
         struct sqlite3* database;
         public:
         Sqlite3(string filePath);
-        Sqlite3(const DatabaseConnection& connectionSettings);
+        Sqlite3(const DatabaseCredentials& connectionSettings);
         // In Memory
         Sqlite3();
         ~Sqlite3();
 
         virtual DataTable query(const string& sqlQuery);
-        virtual std::shared_ptr<DatabaseStatement> prepare(const string& sqlQuery);
+        virtual SqliteStatement* prepare(const string& sqlQuery);
         
         private:
         void openConnection(const string& filePath);
-        std::shared_ptr<SqliteStatement> prepareInternal(const string& sqlQuery);
     };
 }
 
